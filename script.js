@@ -1,13 +1,39 @@
-console.log("hello world")
-
 async function fetchData() {
 const fetchResult = await fetch("https://swapi.dev/api/people/")
-console.log(fetchResult);
 const data = await fetchResult.json();
-console.log(data);
+const characters = data.results; //characters = array[10]
+// mindenhol elérhető a data a fetchData függvényen belül
+
+const rootElement = document.querySelector("#root");
+let charactersHTML = "";
+
+/* for (let i = 0; i < characters.length; i++) {
+    console.log(characters[i]);
+
+    charactersHTML += `
+        <div class="character">
+        <p class="name"> ${characters[i].name} </p>
+        <p class="height">${characters[i].height} cm</p>
+        <p class="mass">${characters[i].mass} kg</p>
+        </div>
+        `;
+    } */
+
+        characters.forEach(character => 
+            charactersHTML += `
+            <div class="character">
+                <p class="name"> ${character.name}</p<>
+                <p class="height"> ${character.height} cm</p<>
+                <p class="mass"> ${character.mass} kg</p<>
+            
+            </div>`
+        );
+
+    rootElement.insertAdjacentHTML("beforeend", charactersHTML);
+
+    //mindenhol elérhető a data a fetchData függvényen belül
 }
 
-// mindenhol elérhető a data a fetchData függvényen belül
 
 fetchData(); 
 
