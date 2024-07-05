@@ -19,7 +19,7 @@ let charactersHTML = "";
         `;
     } */
 
-        characters.forEach(character => 
+   /*      characters.forEach(character => 
             charactersHTML += `
             <div class="character">
                 <p class="name"> ${character.name}</p<>
@@ -29,9 +29,20 @@ let charactersHTML = "";
             </div>`
         );
 
-    rootElement.insertAdjacentHTML("beforeend", charactersHTML);
+    rootElement.insertAdjacentHTML("beforeend", charactersHTML); */
 
     //mindenhol elérhető a data a fetchData függvényen belül
+
+    characters.map(character => 
+        charactersHTML += `
+        <div class="character">
+            <p class="name"> ${character.name}</p>
+            <p class="height"> ${character.height} cm</p>
+            <p class="mass"> ${character.mass} kg</p>
+        </div>`
+    );
+
+    rootElement.insertAdjacentHTML("beforeend", charactersHTML)
 }
 
 
@@ -41,3 +52,7 @@ fetchData();
     .then(response => response.json())
     .then(data => console.log(data)); // csak a 2. then callback függvényében érhető el a data
 */
+
+
+//homework: megcsinálni ugyanezt csak map segítségével
+
