@@ -20,9 +20,38 @@ div.character {
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
+
+    align-self: flex-start;
 
     width: 300px;
+}
+
+div.character p, div.character > button {
+    margin: 5px 0;
+}
+
+
+div.more-data {
+    /*  display: none; */
+    /* opacity: 0; */
+    height: 0;
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+}
+
+button.more.clicked ~ div.more-data {
+    height: 50px
+}
+
+div.character button {
+    width: 120px;
+
+    margin: 5px auto 0;
+
+    padding: 10px;
+
+    cursor:cell;
 }
 
 button.fetch {

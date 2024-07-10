@@ -1,16 +1,34 @@
 let charactersData = [];
-const characterComponent = (name, height, mass, index) => `
+
+// komponensek készítik el a html kódot
+// a bemenő paramétereket körbe öleli valamilyen html kóddal
+// a paramatéreket beleilleszti egy stringbe
+const characterComponent = (name, height, mass, index, hairColor, eyeColor) => `
     <div class="character">
     <h2> character ${index + 1}: </h2>
             <p class="name"> ${name}</p>
             <p class="height"> ${height} cm</p>
             <p class="mass"> ${mass} kg</p>
+
+            <button class="more">show more</button>
+            <div class="more-data">
+            <p class="hair-color"> hair color: ${hairColor} </p>
+            <p class="eye-color"> eye color: ${eyeColor} </p>
+            </div>
         </div>
     `;
 
+    // a .map új objektumokat hoz létre és átalakítja html kóddá, objektumok kulcsait adjuk tovább 1-1 komponensnek
+    // 
 const charactersComponent = (charactersData) => `
     <div class="characters">
-    ${charactersData.map((characterData, index) => characterComponent(characterData.name, characterData.height, characterData.mass, index))
+    ${charactersData.map((characterData, index) => characterComponent(
+        characterData.name,
+        characterData.height,
+        characterData.mass,
+        index,
+        characterData.hair_color,
+        characterData.eye_color))
         .join(" ")}
     </div>
 `;
@@ -21,12 +39,27 @@ const fetchData = async (url) => {
     return data;
 }
 
+
+// a lényeg
+// a meglévő karakter adat tömbbe bele pusholjuk az új adatokat(... nélkül egy elemként csomagolja bele az arraybe, ...-al külön elemenként teszi bele)
+// a rootelement( a belépési pontba) illeszti bele a html kódot
+// buttonhtml = gomb html kódja
+// 
 const makeDomFromData = (data, rootElement) => {
     charactersData.push(...data.results);
     let charactersHtml = charactersComponent(charactersData);
     const buttonHtml = `<button class="fetch"> load more...</button>`;
 
     rootElement.insertAdjacentHTML("beforeend", charactersHtml);
+    const moreButtonElements = document.querySelectorAll("button.more");
+    moreButtonElements.forEach(moreButtonElement => moreButtonElement.
+    addEventListener("click", () => {
+        moreButtonElement.classList.toggle("clicked");
+
+        moreButtonElement.innerText === "show more" ? moreButtonElement.innerText = "show less" :
+        moreButtonElement.innerText = "show more";
+    }));
+
     if (data.next) {rootElement.insertAdjacentHTML("beforeend", buttonHtml);
 
         const buttonElement = document.querySelector("button.fetch");
@@ -40,6 +73,9 @@ const makeDomFromData = (data, rootElement) => {
     }
 }
 
+// innen jon az adat
+// meghatározzuk a belépési pontját
+// az apiból érkező adatot és a belépési pontot átadja a datának és a rootelementnek
 const init = async () => {
     const data = await fetchData("https://swapi.dev/api/people/")
     const rootElement = document.querySelector("#root");
